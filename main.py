@@ -2,7 +2,7 @@
 #user_progress = {}
 
 from database import SessionLocal
-from models import User
+from models import User, InterviewAttempt, SkillProgress
 from fastapi import FastAPI, Request, Form
 from fastapi.responses import HTMLResponse, RedirectResponse
 from fastapi.staticfiles import StaticFiles
@@ -12,11 +12,8 @@ import google.genai as genai
 import os
 
 def get_db():
-    db = SessionLocal()
-    try:
-        return db
-    finally:
-        db.close()
+    return SessionLocal()
+
 
 # Load env
 load_dotenv()
