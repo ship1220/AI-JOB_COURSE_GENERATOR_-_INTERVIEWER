@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/static/styles.css">
+  <title>Job PrepMate</title>
+</head>
+<body>
+  <h1>Job PrepMate👩‍💻✍🏼</h1>
+
+  <div class="top-right">
+    Logged in as <b>{{username}}</b> | 
+    <a href="/logout" style="color:#530101;">Logout</a>
+    <a href="/progress" class="btn">📈 View Progress</a>
+
+  </div>
+
+  <form id="interview-form">
+    <label for="role">✒️Job Role: </label>
+    <input type="text" id="role" name="role" required>
+
+    <label for="type">🧩Question Type:</label>
+    <select id="type" name="type" required>
+      <option value="">-- Select Type --</option>
+      <option value="technical">Technical</option>
+      <option value="coding">Coding</option>
+      <option value="logic">Logic</option>
+      <option value="hr">HR</option>
+      <option value="assessment">Assessment</option>
+    </select>
+
+    <!-- ✅ NEW: Topic Dropdown -->
+    <label for="topic">📚Topic:</label>
+    <select id="topic" name="topic" required>
+      <option value="">-- Select Topic --</option>
+    </select>
+
+    <label for="difficulty">🎯Difficulty:</label>
+    <select id="difficulty" name="difficulty" required>
+      <option value="easy">Easy</option>
+      <option value="medium">Medium</option>
+      <option value="hard">Hard</option>
+    </select>
+
+    <button type="button" onclick="generateQuestion()">Generate Question</button>
+  </form>
+
+  <div id="question-area">
+    <p id="question"></p>
+    <textarea id="answer" placeholder="Type your answer here..."></textarea>
+    <button type="button" onclick="analyzeAnswer()">Get Feedback</button>
+  </div>
+
+  <div id="feedback-area">
+    <h3>🌻Feedback:</h3>
+    <p id="feedback"></p>
+  </div>
+
+  <script>
+    // 🧠 Topic options by type
+    const topicsByType = {
+      technical: ["DSA", "DBMS", "OOP", "Operating Systems", "Computer Networks"],
+      coding: ["Strings", "Arrays", "Recursion", "Sorting", "Searching"],
+      logic: ["Puzzles", "Number Series", "Pattern Recognition"],
+      hr: ["Self Introduction", "Strengths & Weaknesses", "Situational Questions", "Career Goals"],
+      assessment: ["Aptitude", "Verbal", "Reasoning", "Basic Programming"]
+    };
+
+    const typeSelect = document.getElementById("type");
+    const topicSelect = document.getElementById("topic");
+
+    typeSelect.addEventListener("change", function () {
+      const selectedType = this.value;
+      topicSelect.innerHTML = '<option value="">-- Select Topic --</option>';
+
+      if (topicsByType[selectedType]) {
+        topicsByType[selectedType].forEach(topic => {
+          const option = document.createElement("option");
+          option.value = topic.toLowerCase();
+          option.textContent = topic;
+          topicSelect.appendChild(option);
+        });
+      }
+    });
+
+    async function generateQuestion() {
+      const role = document.getElementById('role').value;
+      const type = document.getElementById('type').value;
+      const topic = document.getElementById('topic').value;
+      const difficulty = document.getElementById('difficulty').value;
+
+      const response = await fetch("/generate_question/", {
+        method: 'POST',
+        headers: { 'Content-Type': "application/x-www-form-urlencoded" },
+        body: `role=${encodeURIComponent(role)}&type=${encodeURIComponent(type)}&topic=${encodeURIComponent(topic)}&difficulty=${encodeURIComponent(difficulty)}`
+      });
+
+      const data = await response.json();
+      document.getElementById("question").innerText = data.question || "⚠️ Error generating question. Try again!";
+    }
+
+    async function analyzeAnswer() {
+      const role = document.getElementById('role').value;
+      const topic = document.getElementById('topic').value;
+      const difficulty = document.getElementById('difficulty').value;
+      const answer = document.getElementById('answer').value;
+
+      const response = await fetch("/analyse_answer/", {
+        method: 'POST',
+        headers: { 'Content-Type': "application/x-www-form-urlencoded" },
+        body: `role=${encodeURIComponent(role)}&topic=${encodeURIComponent(topic)}&difficulty=${encodeURIComponent(difficulty)}&answer=${encodeURIComponent(answer)}`
+      });
+
+      const data = await response.json();
+      document.getElementById("feedback").innerText = data.feedback;
+    }
+
+  </script>
+
+</body>
+</html>

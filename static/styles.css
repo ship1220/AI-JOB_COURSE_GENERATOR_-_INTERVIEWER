@@ -1,0 +1,477 @@
+/* styles.css */
+
+/* Import Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Roboto+Slab:wght@700&display=swap');
+
+/* Root color palette */
+:root {
+  --primary-color: #c1fff0;       /* Main accent color */
+  --secondary-color: #b9fff3;     /* Highlight / button */
+  --background-gradient: linear-gradient(135deg, #c8fff3, #cefdf3e6);
+  --card-background: rgba(72, 1, 1, 0.998);
+  --text-color: #b5f6df;
+  --text-muted:#c1fff0;
+  --shadow: 0 10px 25px rgb(116, 253, 226);
+}
+
+/* Reset and base styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Roboto', sans-serif;
+}
+
+body {
+  min-height: 100vh;
+  background: var(--background-gradient);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 40px 20px;
+  color: var(--text-color);
+}
+
+/* Main heading */
+h1 {
+  font-family: 'Roboto Slab', serif;
+  font-size: 3rem;
+  color: var(--primary-color);
+  margin-bottom: 40px;
+  text-align: center;
+  text-shadow: 1px 1px 5px rgba(0,0,0,0.1);
+  background: linear-gradient(90deg, #530101, #791c1c97);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Form styling */
+form#interview-form {
+  background: var(--card-background);
+  backdrop-filter: blur(10px);
+  padding: 25px 30px;
+  border-radius: 20px;
+  box-shadow: var(--shadow);
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  width: 100%;
+  max-width: 450px;
+  transition: transform 0.3s ease;
+}
+
+form#interview-form:hover {
+  transform: translateY(-5px);
+}
+
+form#interview-form label {
+  font-weight: 500;
+  font-size: 1rem;
+}
+
+form#interview-form input {
+  padding: 12px 15px;
+  border-radius: 12px;
+  border: 1px solid #ccc;
+  outline: none;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+}
+
+form#interview-form input:focus {
+  border-color: var(--primary-color);
+  box-shadow: 0 0 8px rgba(108, 99, 255, 0.3);
+}
+
+form#interview-form button {
+  padding: 12px 20px;
+  border-radius: 12px;
+  border: none;
+  background: var(--primary-color);
+  color: #4e0101;
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+form#interview-form button:hover {
+  background: var(--secondary-color);
+  transform: scale(1.05);
+}
+
+/* Question and answer area */
+#question-area {
+  background: var(--card-background);
+  backdrop-filter: blur(10px);
+  padding: 25px 30px;
+  border-radius: 20px;
+  box-shadow: var(--shadow);
+  margin-top: 35px;
+  width: 100%;
+  max-width: 600px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  transition: transform 0.3s ease;
+}
+
+#question-area:hover {
+  transform: translateY(-5px);
+}
+
+#question-area p#question {
+  font-size: 1.15rem;
+  font-weight: 500;
+  color: var(--primary-color);
+}
+
+#question-area textarea {
+  min-height: 120px;
+  padding: 15px;
+  border-radius: 12px;
+  border: 1px solid #ccc;
+  font-size: 1rem;
+  outline: none;
+  transition: all 0.3s ease;
+}
+
+#question-area textarea:focus {
+  border-color: var(--primary-color);
+  box-shadow: 0 0 8px rgba(108, 99, 255, 0.3);
+}
+
+#question-area button {
+  align-self: flex-start;
+  padding: 12px 20px;
+  border-radius: 12px;
+  border: none;
+  background: var(--secondary-color);
+  color: #520101;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+#question-area button:hover {
+  background: var(--primary-color);
+  transform: scale(1.05);
+}
+
+/* Feedback area */
+#feedback-area {
+  background: var(--card-background);
+  backdrop-filter: blur(10px);
+  padding: 25px 30px;
+  border-radius: 20px;
+  box-shadow: var(--shadow);
+  margin-top: 35px;
+  width: 100%;
+  max-width: 600px;
+}
+
+#feedback-area h3 {
+  color: var(--primary-color);
+  margin-bottom: 10px;
+  font-size: 1.3rem;
+}
+
+#feedback-area p#feedback {
+  font-size: 1rem;
+  line-height: 1.6;
+  color:white !important;
+  min-height: 40px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 700px) {
+  form#interview-form, #question-area, #feedback-area {
+    width: 90%;
+    padding: 20px 25px;
+  }
+
+  h1 {
+    font-size: 2.2rem;
+  }
+}
+/* final override for feedback text */
+#feedback-area p#feedback {
+  color: #c1fff0 !important;
+  font-weight: 500;
+}
+/* Root color palette */
+:root {
+  --primary-color: #c1fff0;
+  --secondary-color: #b9fff3;
+  --background-gradient: linear-gradient(135deg, #c8fff3, #cefdf3e6);
+  --card-background: rgba(72, 1, 1, 0.998);
+  --text-color: #b5f6df;
+  --shadow: 0 10px 25px rgb(116, 253, 226);
+}
+
+/* Base styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Roboto', sans-serif;
+}
+
+body {
+  min-height: 100vh;
+  background: var(--background-gradient);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 40px 20px;
+  color: var(--text-color);
+}
+
+/* Main heading */
+h1 {
+  font-family: 'Roboto Slab', serif;
+  font-size: 3rem;
+  color: var(--primary-color);
+  margin-bottom: 40px;
+  text-align: center;
+  text-shadow: 1px 1px 5px rgba(0,0,0,0.1);
+  background: linear-gradient(90deg, #530101, #791c1c97);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Cards */
+.card {
+  background: var(--card-background);
+  backdrop-filter: blur(10px);
+  padding: 25px 30px;
+  border-radius: 20px;
+  box-shadow: var(--shadow);
+  margin: 20px 0;
+  width: 100%;
+  max-width: 500px;
+  text-align: center;
+  transition: transform 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+}
+
+/* Buttons */
+.btn {
+  display: inline-block;
+  padding: 12px 20px;
+  border-radius: 12px;
+  border: none;
+  background: var(--card-background);
+  color:#c1fff0 ;
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: none;
+  margin: 10px 5px;
+  transition: all 0.3s ease;
+}
+
+.btn:hover {
+  background: var(--secondary-color);
+  transform: scale(1.05);
+}
+
+/* Form inside card */
+form.form-card {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+form.form-card label {
+  font-weight: 500;
+  font-size: 1rem;
+  text-align: left;
+}
+
+form.form-card input {
+  padding: 12px 15px;
+  border-radius: 12px;
+  border: 1px solid #ccc;
+  outline: none;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+}
+
+form.form-card input:focus {
+  border-color: var(--primary-color);
+  box-shadow: 0 0 8px rgba(108, 99, 255, 0.3);
+}
+
+/* Responsive */
+@media (max-width: 700px) {
+  h1 {
+    font-size: 2.2rem;
+  }
+  .card {
+    width: 90%;
+    padding: 20px 25px;
+  }
+}
+.top-right {
+  position: absolute; /* positions it relative to the viewport */
+  top: 20px;
+  right: 30px;
+  color: var(--primary-color);
+  font-weight: 500;
+  font-size: 0.95rem;
+  z-index: 1000;
+}
+
+.top-right a {
+  color: var(--primary-color);
+  text-decoration: none;
+  margin-left: 5px;
+  transition: all 0.3s ease;
+}
+
+.top-right a:hover {
+  color: var(--secondary-color);
+  text-decoration: underline;
+}
+/* ======= NAVBAR ======= */
+.navbar {
+  width: 100%;
+  background: rgba(72, 1, 1, 0.98);
+  box-shadow: var(--shadow);
+  padding: 15px 40px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.nav-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.logo {
+  font-family: 'Roboto Slab', serif;
+  color: var(--primary-color);
+  font-size: 1.6rem;
+  background: linear-gradient(90deg, #c1fff0, #b9fff3);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.nav-links a {
+  color: var(--primary-color);
+  text-decoration: none;
+  margin-left: 20px;
+  font-weight: 500;
+  transition: color 0.3s ease;
+}
+
+.nav-links a:hover {
+  color: var(--secondary-color);
+}
+
+/* ======= HERO SECTION ======= */
+.hero {
+  text-align: center;
+  padding: 80px 20px;
+  max-width: 900px;
+}
+
+.hero-content h1 {
+  font-size: 2.8rem;
+  color: #520101;
+  margin-bottom: 20px;
+  text-shadow: 0px 0px 10px rgba(193, 255, 240, 0.5);
+}
+
+.subtitle {
+  font-size: 1.2rem;
+  color: #410000;
+  margin-bottom: 40px;
+  line-height: 1.6;
+}
+
+.cta .btn {
+  margin: 10px;
+}
+
+.btn.outline {
+  background: transparent;
+  border: 2px solid var(--primary-color);
+  color: var(--card-background);
+}
+
+/* ======= FEATURES SECTION ======= */
+.features {
+  text-align: center;
+  margin-top: 60px;
+  width: 100%;
+  max-width: 1100px;
+}
+
+.features h2 {
+  font-size: 2rem;
+  color: #520101;
+  margin-bottom: 30px;
+}
+
+.feature-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 25px;
+  padding: 0 20px;
+}
+
+.feature-card {
+  background: var(--card-background);
+  color: var(--text-color);
+  padding: 30px 20px;
+  border-radius: 20px;
+  box-shadow: var(--shadow);
+  transition: transform 0.3s ease;
+}
+
+.feature-card:hover {
+  transform: translateY(-6px);
+}
+
+/* ======= CONTACT SECTION ======= */
+footer.contact {
+  margin-top: 60px;
+  text-align: center;
+  padding: 40px 20px;
+  background: rgba(72, 1, 1, 0.95);
+  border-radius: 20px;
+  box-shadow: var(--shadow);
+  width: 100%;
+  max-width: 900px;
+}
+
+footer.contact a {
+  color: var(--secondary-color);
+  text-decoration: none;
+}
+
+footer.contact a:hover {
+  text-decoration: underline;
+}
+
+footer.contact p {
+  margin: 8px 0;
+  font-size: 0.95rem;
+}
+
+/* ======= Responsive ======= */
+@media (max-width: 768px) {
+  .hero-content h1 {
+    font-size: 2rem;
+  }
+  .subtitle {
+    font-size: 1rem;
+  }
+}
+
