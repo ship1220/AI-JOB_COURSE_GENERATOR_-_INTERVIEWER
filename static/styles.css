@@ -6,11 +6,11 @@
 /* Root color palette */
 :root {
   --primary-color: #c1fff0;       /* Main accent color */
-  --secondary-color: #b9fff3;     /* Highlight / button */
+  --secondary-color: #b9fff3;     /* Highlight / button hover */
   --background-gradient: linear-gradient(135deg, #c8fff3, #cefdf3e6);
   --card-background: rgba(72, 1, 1, 0.998);
   --text-color: #b5f6df;
-  --text-muted:#c1fff0;
+  --text-muted: #c1fff0;
   --shadow: 0 10px 25px rgb(116, 253, 226);
 }
 
@@ -36,7 +36,6 @@ body {
 h1 {
   font-family: 'Roboto Slab', serif;
   font-size: 3rem;
-  color: var(--primary-color);
   margin-bottom: 40px;
   text-align: center;
   text-shadow: 1px 1px 5px rgba(0,0,0,0.1);
@@ -45,7 +44,104 @@ h1 {
   -webkit-text-fill-color: transparent;
 }
 
-/* Form styling */
+/* ============================= */
+/* Cards (Login/Signup/Progress) */
+/* ============================= */
+.card {
+  background: var(--card-background);
+  backdrop-filter: blur(10px);
+  padding: 25px 30px;
+  border-radius: 20px;
+  box-shadow: var(--shadow);
+  margin: 20px 0;
+  width: 100%;
+  max-width: 500px;
+  text-align: center;
+  transition: transform 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+}
+
+/* Login/Signup forms inside card */
+.form-card form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  text-align: left;
+}
+
+.form-card label {
+  font-weight: 500;
+  font-size: 1rem;
+}
+
+.form-card input {
+  padding: 12px 15px;
+  border-radius: 12px;
+  border: 1px solid #ccc;
+  outline: none;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+}
+
+.form-card input:focus {
+  border-color: var(--primary-color);
+  box-shadow: 0 0 8px rgba(193, 255, 240, 0.3);
+}
+
+/* ============================= */
+/* Buttons */
+/* ============================= */
+.btn {
+  display: inline-block;
+  padding: 12px 20px;
+  border-radius: 12px;
+  border: none;
+  background: var(--primary-color);
+  color: #4e0101;
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: none;
+  margin: 10px 5px;
+  transition: all 0.3s ease;
+}
+
+.btn:hover {
+  background: var(--secondary-color);
+  transform: scale(1.05);
+}
+
+.btn.small-btn {
+  padding: 8px 14px;
+  font-size: 0.9rem;
+}
+
+.btn.dark {
+  background: var(--card-background);
+  color: var(--primary-color);
+}
+
+.btn.dark:hover {
+  background: rgba(72, 1, 1, 0.90);
+}
+
+/* Outline button (Landing Page) */
+.btn.outline {
+  background: transparent;
+  border: 2px solid var(--primary-color);
+  color: #520101;
+}
+
+.btn.outline:hover {
+  background: var(--primary-color);
+  color: #4e0101;
+}
+
+/* ============================= */
+/* Interview Form (index.html) */
+/* ============================= */
 form#interview-form {
   background: var(--card-background);
   backdrop-filter: blur(10px);
@@ -69,7 +165,8 @@ form#interview-form label {
   font-size: 1rem;
 }
 
-form#interview-form input {
+form#interview-form input,
+form#interview-form select {
   padding: 12px 15px;
   border-radius: 12px;
   border: 1px solid #ccc;
@@ -78,9 +175,10 @@ form#interview-form input {
   transition: all 0.3s ease;
 }
 
-form#interview-form input:focus {
+form#interview-form input:focus,
+form#interview-form select:focus {
   border-color: var(--primary-color);
-  box-shadow: 0 0 8px rgba(108, 99, 255, 0.3);
+  box-shadow: 0 0 8px rgba(193, 255, 240, 0.3);
 }
 
 form#interview-form button {
@@ -100,7 +198,9 @@ form#interview-form button:hover {
   transform: scale(1.05);
 }
 
-/* Question and answer area */
+/* ============================= */
+/* Question and Answer Area */
+/* ============================= */
 #question-area {
   background: var(--card-background);
   backdrop-filter: blur(10px);
@@ -138,7 +238,7 @@ form#interview-form button:hover {
 
 #question-area textarea:focus {
   border-color: var(--primary-color);
-  box-shadow: 0 0 8px rgba(108, 99, 255, 0.3);
+  box-shadow: 0 0 8px rgba(193, 255, 240, 0.3);
 }
 
 #question-area button {
@@ -158,7 +258,9 @@ form#interview-form button:hover {
   transform: scale(1.05);
 }
 
-/* Feedback area */
+/* ============================= */
+/* Feedback Area */
+/* ============================= */
 #feedback-area {
   background: var(--card-background);
   backdrop-filter: blur(10px);
@@ -179,149 +281,16 @@ form#interview-form button:hover {
 #feedback-area p#feedback {
   font-size: 1rem;
   line-height: 1.6;
-  color:white !important;
+  color: #c1fff0 !important;
+  font-weight: 500;
   min-height: 40px;
 }
 
-/* Responsive adjustments */
-@media (max-width: 700px) {
-  form#interview-form, #question-area, #feedback-area {
-    width: 90%;
-    padding: 20px 25px;
-  }
-
-  h1 {
-    font-size: 2.2rem;
-  }
-}
-/* final override for feedback text */
-#feedback-area p#feedback {
-  color: #c1fff0 !important;
-  font-weight: 500;
-}
-/* Root color palette */
-:root {
-  --primary-color: #c1fff0;
-  --secondary-color: #b9fff3;
-  --background-gradient: linear-gradient(135deg, #c8fff3, #cefdf3e6);
-  --card-background: rgba(72, 1, 1, 0.998);
-  --text-color: #b5f6df;
-  --shadow: 0 10px 25px rgb(116, 253, 226);
-}
-
-/* Base styles */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: 'Roboto', sans-serif;
-}
-
-body {
-  min-height: 100vh;
-  background: var(--background-gradient);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 40px 20px;
-  color: var(--text-color);
-}
-
-/* Main heading */
-h1 {
-  font-family: 'Roboto Slab', serif;
-  font-size: 3rem;
-  color: var(--primary-color);
-  margin-bottom: 40px;
-  text-align: center;
-  text-shadow: 1px 1px 5px rgba(0,0,0,0.1);
-  background: linear-gradient(90deg, #530101, #791c1c97);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
-
-/* Cards */
-.card {
-  background: var(--card-background);
-  backdrop-filter: blur(10px);
-  padding: 25px 30px;
-  border-radius: 20px;
-  box-shadow: var(--shadow);
-  margin: 20px 0;
-  width: 100%;
-  max-width: 500px;
-  text-align: center;
-  transition: transform 0.3s ease;
-}
-
-.card:hover {
-  transform: translateY(-5px);
-}
-
-/* Buttons */
-.btn {
-  display: inline-block;
-  padding: 12px 20px;
-  border-radius: 12px;
-  border: none;
-  background: var(--card-background);
-  color:#c1fff0 ;
-  font-weight: 600;
-  cursor: pointer;
-  text-decoration: none;
-  margin: 10px 5px;
-  transition: all 0.3s ease;
-}
-
-.btn:hover {
-  background: var(--secondary-color);
-  transform: scale(1.05);
-}
-
-/* Form inside card */
-form.form-card {
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-}
-
-form.form-card label {
-  font-weight: 500;
-  font-size: 1rem;
-  text-align: left;
-}
-
-form.form-card input {
-  padding: 12px 15px;
-  border-radius: 12px;
-  border: 1px solid #ccc;
-  outline: none;
-  font-size: 1rem;
-  transition: all 0.3s ease;
-}
-
-form.form-card input:focus {
-  border-color: var(--primary-color);
-  box-shadow: 0 0 8px rgba(108, 99, 255, 0.3);
-}
-
-.form-card form {
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-}
-/* Responsive */
-@media (max-width: 700px) {
-  h1 {
-    font-size: 2.2rem;
-  }
-  .card {
-    width: 90%;
-    padding: 20px 25px;
-  }
-}
+/* ============================= */
+/* Top Right Logged-in Badge */
+/* ============================= */
 .top-right {
-  position: absolute; /* positions it relative to the viewport */
+  position: absolute;
   top: 20px;
   right: 30px;
   color: var(--primary-color);
@@ -333,7 +302,7 @@ form.form-card input:focus {
 .top-right a {
   color: var(--primary-color);
   text-decoration: none;
-  margin-left: 5px;
+  margin-left: 8px;
   transition: all 0.3s ease;
 }
 
@@ -341,7 +310,10 @@ form.form-card input:focus {
   color: var(--secondary-color);
   text-decoration: underline;
 }
-/* ======= NAVBAR ======= */
+
+/* ============================= */
+/* NAVBAR (Landing Page) */
+/* ============================= */
 .navbar {
   width: 100%;
   background: rgba(72, 1, 1, 0.98);
@@ -379,7 +351,9 @@ form.form-card input:focus {
   color: var(--secondary-color);
 }
 
-/* ======= HERO SECTION ======= */
+/* ============================= */
+/* HERO SECTION */
+/* ============================= */
 .hero {
   text-align: center;
   padding: 80px 20px;
@@ -404,13 +378,9 @@ form.form-card input:focus {
   margin: 10px;
 }
 
-.btn.outline {
-  background: transparent;
-  border: 2px solid var(--primary-color);
-  color: var(--card-background);
-}
-
-/* ======= FEATURES SECTION ======= */
+/* ============================= */
+/* FEATURES SECTION */
+/* ============================= */
 .features {
   text-align: center;
   margin-top: 60px;
@@ -444,7 +414,9 @@ form.form-card input:focus {
   transform: translateY(-6px);
 }
 
-/* ======= CONTACT SECTION ======= */
+/* ============================= */
+/* CONTACT SECTION */
+/* ============================= */
 footer.contact {
   margin-top: 60px;
   text-align: center;
@@ -470,7 +442,9 @@ footer.contact p {
   font-size: 0.95rem;
 }
 
-/* ======= Responsive ======= */
+/* ============================= */
+/* Responsive */
+/* ============================= */
 @media (max-width: 768px) {
   .hero-content h1 {
     font-size: 2rem;
@@ -480,3 +454,20 @@ footer.contact p {
   }
 }
 
+@media (max-width: 700px) {
+  form#interview-form,
+  #question-area,
+  #feedback-area {
+    width: 90%;
+    padding: 20px 25px;
+  }
+
+  h1 {
+    font-size: 2.2rem;
+  }
+
+  .card {
+    width: 90%;
+    padding: 20px 25px;
+  }
+}
