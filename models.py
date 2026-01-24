@@ -1,6 +1,11 @@
-from sqlalchemy import Column, Integer, String, Boolean, ForeignKey
+from sqlalchemy import Column, Integer, String, Boolean, ForeignKey, DateTime, Text
 from database import Base
+from datetime import datetime
 
+
+# =========================
+# USERS
+# =========================
 class User(Base):
     __tablename__ = "users"
 
@@ -8,6 +13,21 @@ class User(Base):
     username = Column(String, unique=True, index=True)
     password = Column(String)
 
+
+class UserTarget(Base):
+    __tablename__ = "user_targets"
+
+    id = Column(Integer, primary_key=True, index=True)
+    user_id = Column(Integer, ForeignKey("users.id"), unique=True)
+
+    role = Column(String, nullable=False)
+    level = Column(String, nullable=False)  # Intern/Junior/Senior
+    updated_at = Column(DateTime, default=datetime.utcnow)
+
+
+# =========================
+# SKILL TRACKING
+# =========================
 class SkillProgress(Base):
     __tablename__ = "skill_progress"
 
@@ -17,23 +37,40 @@ class SkillProgress(Base):
     attempts = Column(Integer, default=0)
     weak = Column(Boolean, default=False)
 
-from sqlalchemy import DateTime
-from datetime import datetime
+
+# =========================
+# INTERVIEW
+# =========================
+class InterviewSession(Base):
+    __tablename__ = "interview_sessions"
+
+    id = Column(Integer, primary_key=True, index=True)
+    user_id = Column(Integer, ForeignKey("users.id"))
+
+    role = Column(String, nullable=False)
+    level = Column(String, nullable=False)
+
+    status = Column(String, default="active")  # active/completed
+    created_at = Column(DateTime, default=datetime.utcnow)
+
 
 class InterviewAttempt(Base):
     __tablename__ = "interview_attempts"
 
     id = Column(Integer, primary_key=True, index=True)
-    user_id = Column(Integer)
+    user_id = Column(Integer, ForeignKey("users.id"))  # ✅ FIXED
+
     role = Column(String)
     topic = Column(String)
     difficulty = Column(String)
-    answer = Column(String)
-    feedback = Column(String)
+    answer = Column(Text)       # better than String for long answers
+    feedback = Column(Text)     # better than String for long feedback
     timestamp = Column(DateTime, default=datetime.utcnow)
 
-from sqlalchemy import Text
 
+# =========================
+# COURSE BUILDER
+# =========================
 class Course(Base):
     __tablename__ = "courses"
 
@@ -65,7 +102,22 @@ class Unit(Base):
     title = Column(String, nullable=False)
     order_index = Column(Integer, default=0)
 
-    content = Column(Text, nullable=True)          # generated lesson text
-    status = Column(String, default="pending")     # pending/generated
+    content = Column(Text, nullable=True)
+    status = Column(String, default="pending")
     estimated_minutes = Column(Integer, default=10)
 
+
+# =========================
+# QUIZ
+# =========================
+class QuizAttempt(Base):
+    __tablename__ = "quiz_attempts"
+
+    id = Column(Integer, primary_key=True, index=True)
+    user_id = Column(Integer, ForeignKey("users.id"))
+
+    unit_id = Column(Integer, ForeignKey("units.id"))
+    score = Column(Integer, default=0)
+
+    wrong_concepts = Column(Text, nullable=True)
+    created_at = Column(DateTime, default=datetime.utcnow)
