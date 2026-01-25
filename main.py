@@ -211,7 +211,7 @@ def login(request: Request, username: str = Form(...), password: str = Form(...)
     ).first()
 
     if user:
-        response = RedirectResponse(url="/index", status_code=303)
+        response = RedirectResponse(url="/dashboard", status_code=303)
         response.set_cookie(key="user", value=username)
         return response
 
