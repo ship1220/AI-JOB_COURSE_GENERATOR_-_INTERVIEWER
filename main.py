@@ -239,7 +239,99 @@ def logout():
     response.delete_cookie("user")
     return response
 
+@app.get("/dashboard", response_class=HTMLResponse)
+def dashboard_page(request: Request):
+    username = request.cookies.get("user")
+    if not username:
+        return RedirectResponse(url="/login")
 
+    return templates.TemplateResponse(
+        "dashboard.html",
+        {"request": request, "username": username}
+    )
+
+# ---------------- COURSE FLOW ----------------
+
+@app.get("/course", response_class=HTMLResponse)
+def course_page(request: Request):
+    username = request.cookies.get("user")
+    if not username:
+        return RedirectResponse(url="/login")
+
+    return templates.TemplateResponse(
+        "course.html",
+        {"request": request, "username": username}
+    )
+
+
+@app.post("/generate_course", response_class=HTMLResponse)
+def generate_course(request: Request, role: str = Form(...), level: str = Form(...)):
+    username = request.cookies.get("user")
+    if not username:
+        return RedirectResponse(url="/login")
+
+    # 🔥 For now: example course structure
+    # Later: replace this with AI-generated course using Ollama/Gemini
+    course = [
+        {
+            "chapter_title": "Chapter 1: Python Fundamentals",
+            "units": [
+                {"unit_title": "Unit 1: Basics", "topics": ["Syntax", "Variables", "Loops", "Functions"]},
+                {"unit_title": "Unit 2: Data Structures", "topics": ["Lists", "Tuples", "Sets", "Dictionaries"]},
+            ],
+        },
+        {
+            "chapter_title": "Chapter 2: Data Analysis Libraries",
+            "units": [
+                {"unit_title": "Unit 1: NumPy", "topics": ["Arrays", "Indexing", "Vectorized Operations"]},
+                {"unit_title": "Unit 2: Pandas", "topics": ["DataFrames", "Cleaning", "GroupBy", "Joins"]},
+            ],
+        },
+        {
+            "chapter_title": "Chapter 3: BI + Visualization",
+            "units": [
+                {"unit_title": "Unit 1: Power BI", "topics": ["Dashboards", "DAX Basics", "Reports"]},
+                {"unit_title": "Unit 2: Tableau", "topics": ["Charts", "Filters", "Storytelling"]},
+            ],
+        },
+        {
+            "chapter_title": "Chapter 4: SQL for Data Analyst",
+            "units": [
+                {"unit_title": "Unit 1: Queries", "topics": ["SELECT", "WHERE", "GROUP BY", "HAVING"]},
+                {"unit_title": "Unit 2: Joins + Subqueries", "topics": ["INNER JOIN", "LEFT JOIN", "CTE", "Window Functions"]},
+            ],
+        },
+    ]
+
+    # Store course in memory for this user (simple)
+    interview_sessions[username] = interview_sessions.get(username, {})
+    interview_sessions[username]["course"] = course
+    interview_sessions[username]["role"] = role
+    interview_sessions[username]["level"] = level
+
+    return templates.TemplateResponse(
+        "course.html",
+        {"request": request, "username": username, "course": course, "role": role, "level": level}
+    )
+
+
+@app.get("/course_interview", response_class=HTMLResponse)
+def course_interview(request: Request):
+    username = request.cookies.get("user")
+    if not username:
+        return RedirectResponse(url="/login")
+
+    # If course not generated yet
+    if username not in interview_sessions or "course" not in interview_sessions[username]:
+        return RedirectResponse(url="/course")
+
+    role = interview_sessions[username].get("role", "")
+    level = interview_sessions[username].get("level", "")
+
+    return templates.TemplateResponse(
+        "index.html",
+        {"request": request, "username": username, "role": role, "level": level, "course_mode": True}
+    )
 # ---------------- NEW INTERVIEW FLOW ----------------
 
 @app.post("/start_interview/")
