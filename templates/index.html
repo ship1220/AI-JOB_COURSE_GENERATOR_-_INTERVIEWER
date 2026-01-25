@@ -1,121 +1,92 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="/static/styles.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="/static/styles.css" />
   <title>Job PrepMate</title>
 </head>
 <body>
+
   <h1>Job PrepMate👩‍💻✍🏼</h1>
 
   <div class="top-right">
-    Logged in as <b>{{username}}</b> | 
+    Logged in as <b>{{username}}</b> |
     <a href="/logout" style="color:#530101;">Logout</a>
     <a href="/progress" class="btn">📈 View Progress</a>
-
   </div>
 
-  <form id="interview-form">
-    <label for="role">✒️Job Role: </label>
-    <input type="text" id="role" name="role" required>
+  <h2>🎤 Start Mock Interview</h2>
 
-    <label for="type">🧩Question Type:</label>
-    <select id="type" name="type" required>
-      <option value="">-- Select Type --</option>
-      <option value="technical">Technical</option>
-      <option value="coding">Coding</option>
-      <option value="logic">Logic</option>
-      <option value="hr">HR</option>
-      <option value="assessment">Assessment</option>
+  <form id="start-form">
+    <label for="role">✒️ Job Role:</label>
+    <input type="text" id="role" name="role" placeholder="e.g. Data Analyst" required>
+
+    <label for="level">🎯 Designation / Level:</label>
+    <select id="level" name="level" required>
+      <option value="">-- Select Level --</option>
+      <option value="intern">Intern</option>
+      <option value="junior">Junior</option>
+      <option value="mid">Mid-Level</option>
+      <option value="senior">Senior</option>
     </select>
 
-    <!-- ✅ NEW: Topic Dropdown -->
-    <label for="topic">📚Topic:</label>
-    <select id="topic" name="topic" required>
-      <option value="">-- Select Topic --</option>
-    </select>
-
-    <label for="difficulty">🎯Difficulty:</label>
-    <select id="difficulty" name="difficulty" required>
-      <option value="easy">Easy</option>
-      <option value="medium">Medium</option>
-      <option value="hard">Hard</option>
-    </select>
-
-    <button type="button" onclick="generateQuestion()">Generate Question</button>
+    <button type="button" onclick="startInterview()">Start Interview</button>
   </form>
 
-  <div id="question-area">
+  <hr>
+
+  <div id="question-area" style="display:none;">
+    <h3>📝 Question:</h3>
     <p id="question"></p>
+
     <textarea id="answer" placeholder="Type your answer here..."></textarea>
-    <button type="button" onclick="analyzeAnswer()">Get Feedback</button>
+    <button type="button" onclick="submitAnswer()">Submit Answer</button>
   </div>
 
-  <div id="feedback-area">
-    <h3>🌻Feedback:</h3>
+  <div id="feedback-area" style="display:none;">
+    <h3>🌻 Feedback:</h3>
     <p id="feedback"></p>
   </div>
 
   <script>
-    // 🧠 Topic options by type
-    const topicsByType = {
-      technical: ["DSA", "DBMS", "OOP", "Operating Systems", "Computer Networks"],
-      coding: ["Strings", "Arrays", "Recursion", "Sorting", "Searching"],
-      logic: ["Puzzles", "Number Series", "Pattern Recognition"],
-      hr: ["Self Introduction", "Strengths & Weaknesses", "Situational Questions", "Career Goals"],
-      assessment: ["Aptitude", "Verbal", "Reasoning", "Basic Programming"]
-    };
+    async function startInterview() {
+      const role = document.getElementById("role").value;
+      const level = document.getElementById("level").value;
 
-    const typeSelect = document.getElementById("type");
-    const topicSelect = document.getElementById("topic");
+      const response = await fetch("/start_interview/", {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: `role=${encodeURIComponent(role)}&level=${encodeURIComponent(level)}`
+      });
 
-    typeSelect.addEventListener("change", function () {
-      const selectedType = this.value;
-      topicSelect.innerHTML = '<option value="">-- Select Topic --</option>';
+      const data = await response.json();
 
-      if (topicsByType[selectedType]) {
-        topicsByType[selectedType].forEach(topic => {
-          const option = document.createElement("option");
-          option.value = topic.toLowerCase();
-          option.textContent = topic;
-          topicSelect.appendChild(option);
-        });
+      document.getElementById("question-area").style.display = "block";
+      document.getElementById("feedback-area").style.display = "none";
+      document.getElementById("question").innerText = data.question || "⚠️ Error starting interview.";
+    }
+
+    async function submitAnswer() {
+      const answer = document.getElementById("answer").value;
+
+      const response = await fetch("/submit_answer/", {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: `answer=${encodeURIComponent(answer)}`
+      });
+
+      const data = await response.json();
+
+      document.getElementById("feedback-area").style.display = "block";
+      document.getElementById("feedback").innerText = data.feedback || "⚠️ Error generating feedback.";
+
+      // next question auto-load
+      if (data.next_question) {
+        document.getElementById("question").innerText = data.next_question;
+        document.getElementById("answer").value = "";
       }
-    });
-
-    async function generateQuestion() {
-      const role = document.getElementById('role').value;
-      const type = document.getElementById('type').value;
-      const topic = document.getElementById('topic').value;
-      const difficulty = document.getElementById('difficulty').value;
-
-      const response = await fetch("/generate_question/", {
-        method: 'POST',
-        headers: { 'Content-Type': "application/x-www-form-urlencoded" },
-        body: `role=${encodeURIComponent(role)}&type=${encodeURIComponent(type)}&topic=${encodeURIComponent(topic)}&difficulty=${encodeURIComponent(difficulty)}`
-      });
-
-      const data = await response.json();
-      document.getElementById("question").innerText = data.question || "⚠️ Error generating question. Try again!";
     }
-
-    async function analyzeAnswer() {
-      const role = document.getElementById('role').value;
-      const topic = document.getElementById('topic').value;
-      const difficulty = document.getElementById('difficulty').value;
-      const answer = document.getElementById('answer').value;
-
-      const response = await fetch("/analyse_answer/", {
-        method: 'POST',
-        headers: { 'Content-Type': "application/x-www-form-urlencoded" },
-        body: `role=${encodeURIComponent(role)}&topic=${encodeURIComponent(topic)}&difficulty=${encodeURIComponent(difficulty)}&answer=${encodeURIComponent(answer)}`
-      });
-
-      const data = await response.json();
-      document.getElementById("feedback").innerText = data.feedback;
-    }
-
   </script>
 
 </body>
